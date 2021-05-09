@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -21,6 +22,7 @@ import com.example.appchat.adapter.UsersAdapter;
 import com.example.appchat.databinding.ListuserFragmentBinding;
 import com.example.appchat.event.EventCloseActivity;
 import com.example.appchat.event.IOnClickUser;
+import com.example.appchat.objects.MessageSend;
 import com.example.appchat.objects.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,6 +45,8 @@ public class ListUsersFragment extends Fragment {
     DatabaseReference data;
     String userId;
     List<User> listUser;
+    User user;
+    String userImagelink;
 
     public static ListUsersFragment newInstance() {
 
@@ -63,15 +67,15 @@ public class ListUsersFragment extends Fragment {
 
         userId = firebaseUser.getUid();
 
-            data.child(userId).addValueEventListener(new ValueEventListener() {
+        data.child(userId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    User user = snapshot.getValue(User.class);
+                    user = snapshot.getValue(User.class);
                     if (user != null) {
-                        String imgurl = user.getImageurl();
+                        userImagelink = user.getImageurl();
                         String username = user.getUsername();
                         if (getContext()!=null) {
-                            Glide.with(getContext()).load(imgurl).into(binding.imgAvatar);
+                            Glide.with(getContext()).load(userImagelink).into(binding.imgAvatar);
                         }
                         binding.tvUsername.setText(username);
                     }
@@ -86,6 +90,11 @@ public class ListUsersFragment extends Fragment {
         hm.put("status", "Online");
         data.child(userId).updateChildren(hm);
         getAllUser();
+        binding.imgAvatar.setOnClickListener(v->{
+            Fragment fragment = UserInforFragment.newInstance(user);
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right).replace(R.id.layout_chat,fragment).addToBackStack(null).commit();
+        });
         return binding.getRoot();
     }
 
@@ -107,7 +116,7 @@ public class ListUsersFragment extends Fragment {
                 adapter.setiOnClickUser(new IOnClickUser() {
                     @Override
                     public void itemClick(User user) {
-                        Fragment fragment = ChatFragment.newInstance(user);
+                        Fragment fragment = ChatFragment.newInstance(user,userImagelink);
                         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                         fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right).replace(R.id.layout_chat,fragment).addToBackStack(null).commit();
                     }
@@ -121,15 +130,9 @@ public class ListUsersFragment extends Fragment {
 
             }
         });
-        binding.btnSignOut.setOnClickListener(v->signOut());
+
     }
-    public void signOut(){
-        setStatus("Offline");
-        mAuth.signOut();
-        Intent intent = new Intent(getContext(), MainActivity.class);
-        startActivity(intent);
-        EventBus.getDefault().post(new EventCloseActivity());
-    }
+
     public void setStatus(String status){
         try {
             firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -142,6 +145,7 @@ public class ListUsersFragment extends Fragment {
 
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -158,4 +162,5 @@ public class ListUsersFragment extends Fragment {
         super.onStop();
         EventBus.getDefault().unregister(getContext());
     }
+    
 }

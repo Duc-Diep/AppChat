@@ -9,11 +9,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.appchat.R;
 import com.example.appchat.objects.MessageSend;
+import com.example.appchat.objects.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -25,6 +31,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     List<MessageSend> list;
     Context context;
     FirebaseUser firebaseUser;
+    String imgSender,imgReceiver;
+
+    public void setImgSender(String imgSender) {
+        this.imgSender = imgSender;
+    }
+
+    public void setImgReceiver(String imgReceiver) {
+        this.imgReceiver = imgReceiver;
+    }
+
+
 
     public MessageAdapter(List<MessageSend> list, Context context) {
         this.list = list;
@@ -49,11 +66,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         MessageSend messageSend = list.get(position);
         holder.tvMessage.setText(messageSend.getContent());
         if (holder.getItemViewType()==MSG_RIGHT_TYPE){
-            if (messageSend.getIsSeen().equals("seen")){
+            Glide.with(context).load(imgSender).into(holder.imgAvatar);
+            if (messageSend.getIsSeen().equalsIgnoreCase("seen")){
                 holder.tvSeen.setVisibility(View.VISIBLE);
             }else{
                 holder.tvSeen.setVisibility(View.GONE);
             }
+        }else{
+            Glide.with(context).load(imgReceiver).into(holder.imgAvatar);
         }
     }
 
@@ -83,4 +103,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         }
 
     }
+
+
 }

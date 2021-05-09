@@ -63,4 +63,10 @@ public class ChatActivity extends AppCompatActivity {
     public void onCloseEvent(EventCloseActivity event) {
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
