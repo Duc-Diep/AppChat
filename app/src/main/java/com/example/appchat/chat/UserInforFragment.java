@@ -97,7 +97,7 @@ public class UserInforFragment extends Fragment {
     private void changeName() {
         data  = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
         HashMap<String,Object> hm = new HashMap<>();
-        hm.put("username",binding.edtUsernameInfor.getText());
+        hm.put("username",binding.edtUsernameInfor.getText().toString());
         data.updateChildren(hm);
     }
 

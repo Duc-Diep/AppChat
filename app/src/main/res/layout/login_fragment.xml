@@ -53,6 +53,7 @@
         <Button
             android:id="@+id/btnLogin"
             android:text="Login"
+            android:background="@drawable/border_button"
             android:layout_marginTop="@dimen/_40sdp"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/layoutEdtPass"
@@ -61,6 +62,7 @@
 
         <Button
             android:id="@+id/btnRegis"
+            android:background="@drawable/border_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/btnLogin"

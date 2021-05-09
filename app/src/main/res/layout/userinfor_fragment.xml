@@ -22,10 +22,10 @@
             android:id="@+id/imgChooseImg"
             android:layout_centerHorizontal="true"
             android:layout_toRightOf="@id/imgAvatarUser"
-            android:layout_marginTop="@dimen/_100sdp"
-            android:layout_width="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_110sdp"
+            android:layout_width="@dimen/_40sdp"
             android:src="@drawable/ic_baseline_image_24"
-            android:layout_height="@dimen/_50sdp"/>
+            android:layout_height="@dimen/_40sdp"/>
         <EditText
             android:id="@+id/edtUsernameInfor"
             android:layout_below="@id/imgAvatarUser"
@@ -56,6 +56,7 @@
         <Button
             android:id="@+id/btnSignOut"
             android:text="Sign Out"
+            android:background="@drawable/border_button"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/_10sdp"
