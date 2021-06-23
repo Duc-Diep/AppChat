@@ -25,6 +25,8 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.example.appchat.config.Constant.IMG_LINK_DEFAULT;
+
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
     public static final int MSG_LEFT_TYPE = 0 ;
     public static final int MSG_RIGHT_TYPE = 1 ;
@@ -66,14 +68,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         MessageSend messageSend = list.get(position);
         holder.tvMessage.setText(messageSend.getContent());
         if (holder.getItemViewType()==MSG_RIGHT_TYPE){
-            Glide.with(context).load(imgSender).into(holder.imgAvatar);
+            if (imgSender.equalsIgnoreCase("")){
+                Glide.with(context).load(IMG_LINK_DEFAULT).into(holder.imgAvatar);
+            }else{
+                Glide.with(context).load(imgSender).into(holder.imgAvatar);
+            }
+
             if (messageSend.getIsSeen().equalsIgnoreCase("seen")){
                 holder.tvSeen.setVisibility(View.VISIBLE);
             }else{
                 holder.tvSeen.setVisibility(View.GONE);
             }
         }else{
-            Glide.with(context).load(imgReceiver).into(holder.imgAvatar);
+            if (imgSender.equalsIgnoreCase("")){
+                Glide.with(context).load(IMG_LINK_DEFAULT).into(holder.imgAvatar);
+            }else{
+                Glide.with(context).load(imgReceiver).into(holder.imgAvatar);
+            }
         }
     }
 

@@ -30,6 +30,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseError;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -47,6 +50,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.appchat.config.Constant.IMG_LINK_DEFAULT;
 
 public class UserInforFragment extends Fragment {
     UserinforFragmentBinding binding;
@@ -58,7 +62,6 @@ public class UserInforFragment extends Fragment {
     Uri filepath;
     UploadTask uploadTask;
     public static UserInforFragment newInstance(User user) {
-
         Bundle args = new Bundle();
         args.putParcelable("user",user);
         UserInforFragment fragment = new UserInforFragment();
@@ -72,7 +75,11 @@ public class UserInforFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.userinfor_fragment,container,false);
         user = getArguments().getParcelable("user");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        Glide.with(getContext()).load(user.getImageurl()).into(binding.imgAvatarUser);
+        if (user.getImageurl().equalsIgnoreCase("")){
+            Glide.with(getContext()).load(IMG_LINK_DEFAULT).into(binding.imgAvatarUser);
+        }else{
+            Glide.with(getContext()).load(user.getImageurl()).into(binding.imgAvatarUser);
+        }
         binding.edtUsernameInfor.setText(user.getUsername());
         binding.txtEmail.setText(firebaseUser.getEmail());
         binding.btnEdit.setOnClickListener(v->{
@@ -100,6 +107,25 @@ public class UserInforFragment extends Fragment {
         hm.put("username",binding.edtUsernameInfor.getText().toString());
         data.updateChildren(hm);
     }
+
+    private void updatePassword(){
+        AuthCredential authCredential = EmailAuthProvider.getCredential(firebaseUser.getEmail(),"oldPass");
+        firebaseUser.reauthenticate(authCredential).addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                firebaseUser.updatePassword("newPassword").addOnCompleteListener(task1->{
+                    if (task1.isSuccessful()){
+                        Toast.makeText(getContext(), "Change password success", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getContext(), "Change password unsuccess", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }else{
+                Toast.makeText(getContext(), "Current password is uncorrect", Toast.LENGTH_SHORT).show();
+            }
+        });
+        firebaseUser.updatePassword("Hihi");
+    }
+
 
     private void chooseImage() {
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);

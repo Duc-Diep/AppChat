@@ -94,6 +94,11 @@ public class LoginFragment extends Fragment {
             }
         });
     }
+    public void ForgotPass(String email){
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.sendPasswordResetEmail(email);
+    }
+
     @Override
     public void onStart() {
         super.onStart();

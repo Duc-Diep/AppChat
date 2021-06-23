@@ -38,6 +38,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.example.appchat.config.Constant.IMG_LINK_DEFAULT;
+
 public class ListUsersFragment extends Fragment {
     ListuserFragmentBinding binding;
     FirebaseUser firebaseUser;
@@ -75,6 +77,9 @@ public class ListUsersFragment extends Fragment {
                         userImagelink = user.getImageurl();
                         String username = user.getUsername();
                         if (getContext()!=null) {
+                            if (userImagelink.equalsIgnoreCase("")){
+                                Glide.with(getContext()).load(IMG_LINK_DEFAULT).into(binding.imgAvatar);
+                            }else
                             Glide.with(getContext()).load(userImagelink).into(binding.imgAvatar);
                         }
                         binding.tvUsername.setText(username);

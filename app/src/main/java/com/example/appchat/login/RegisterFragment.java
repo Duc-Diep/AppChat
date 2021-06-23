@@ -74,6 +74,7 @@ public class RegisterFragment extends Fragment {
             return;
         }
         binding.progessBar.setVisibility(View.VISIBLE);
+
         mAth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
