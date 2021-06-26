@@ -22,12 +22,14 @@
         android:layout_below="@id/tvTitle"
         android:layout_width="match_parent"
         app:passwordToggleEnabled="true"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edtCurrentPass"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:inputType="textPassword"
             android:hint="Enter your current password" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -42,6 +44,7 @@
             android:id="@+id/edtNewPass"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:inputType="textPassword"
             android:hint="Enter new password" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,6 +59,7 @@
             android:id="@+id/edtConfirmPass"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:inputType="textPassword"
             android:hint="Enter your current password" />
     </com.google.android.material.textfield.TextInputLayout>
     <Button
@@ -82,4 +86,13 @@
         android:layout_height="wrap_content">
 
     </Button>
+    <ProgressBar
+        android:id="@+id/processBar"
+        android:layout_below="@+id/btnCancel"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp">
+
+    </ProgressBar>
 </RelativeLayout>

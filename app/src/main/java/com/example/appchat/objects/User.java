@@ -7,6 +7,7 @@ public class User implements Parcelable {
     String id,username,imageurl,status;
 
     public User() {
+
     }
 
     public User(String id, String username, String imageurl, String status) {

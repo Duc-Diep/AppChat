@@ -3,9 +3,11 @@ package com.example.appchat.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class ChangePasswordDialog extends Dialog {
     TextInputEditText edtCurrentPass,edtNewPass,edtConfirmPass;
     Button btnChangePass,btnCancel;
+    ProgressBar progressBar;
     FirebaseUser firebaseUser;
     public ChangePasswordDialog(@NonNull Context context) {
         super(context);
@@ -51,28 +54,32 @@ public class ChangePasswordDialog extends Dialog {
             return;
         }
         if (newPass.length()<6){
-            edtCurrentPass.setError("Password length >6");
-            edtCurrentPass.requestFocus();
+            edtNewPass.setError("Password length >6");
+            edtNewPass.requestFocus();
             return;
         }
         if (!confirmPass.equals(newPass)){
-            edtCurrentPass.setError("confirm password is not same as new password");
-            edtCurrentPass.requestFocus();
+            edtConfirmPass.setError("confirm password is not same as new password");
+            edtConfirmPass.requestFocus();
             return;
         }
-
+        progressBar.setVisibility(View.VISIBLE);
         AuthCredential authCredential = EmailAuthProvider.getCredential(firebaseUser.getEmail(),currentPass);
         firebaseUser.reauthenticate(authCredential).addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 firebaseUser.updatePassword(newPass).addOnCompleteListener(task1->{
                     if (task1.isSuccessful()){
                         Toast.makeText(getContext(), "Change password success", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                        cancel();
                     }else{
                         Toast.makeText(getContext(), "Change password unsuccess", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
             }else{
                 Toast.makeText(getContext(), "Current password is uncorrect", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
 //        firebaseUser.updatePassword("Hihi");
@@ -83,7 +90,7 @@ public class ChangePasswordDialog extends Dialog {
         edtConfirmPass = findViewById(R.id.edtConfirmPass);
         btnChangePass = findViewById(R.id.btnChangePass);
         btnCancel = findViewById(R.id.btnCancel);
-
+        progressBar = findViewById(R.id.processBar);
     }
 
 }
