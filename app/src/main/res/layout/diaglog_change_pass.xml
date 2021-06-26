@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/_10sdp">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:text="Change Password"
+        android:textStyle="bold"
+        android:textColor="#03A9F4"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/_25sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </TextView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutEdtCurrentPass"
+        android:layout_below="@id/tvTitle"
+        android:layout_width="match_parent"
+        app:passwordToggleEnabled="true"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtCurrentPass"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Enter your current password" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutEdtNewPass"
+        android:layout_width="match_parent"
+        app:passwordToggleEnabled="true"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutEdtCurrentPass">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtNewPass"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Enter new password" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutEdtConfirmPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        android:layout_below="@id/layoutEdtNewPass">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtConfirmPass"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Enter your current password" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/btnChangePass"
+        android:background="@drawable/border_button"
+        android:padding="@dimen/_5sdp"
+        android:text="Change password"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_below="@id/layoutEdtConfirmPass"
+        android:layout_height="wrap_content">
+
+    </Button>
+    <Button
+        android:id="@+id/btnCancel"
+        android:background="@drawable/border_button"
+        android:padding="@dimen/_5sdp"
+        android:text="Cancel"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_below="@id/layoutEdtConfirmPass"
+        android:layout_height="wrap_content">
+
+    </Button>
+</RelativeLayout>

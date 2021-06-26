@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.example.appchat.R;
 import com.example.appchat.activity.MainActivity;
 import com.example.appchat.databinding.UserinforFragmentBinding;
+import com.example.appchat.dialog.ChangePasswordDialog;
 import com.example.appchat.event.EventCloseActivity;
 import com.example.appchat.objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -98,6 +99,9 @@ public class UserInforFragment extends Fragment {
         });
         binding.btnSignOut.setOnClickListener(v->signOut());
         binding.imgChooseImg.setOnClickListener(v->{chooseImage();});
+        binding.btnChangePassword.setOnClickListener(v -> {
+            updatePassword();
+        });
         return binding.getRoot();
     }
 
@@ -109,21 +113,9 @@ public class UserInforFragment extends Fragment {
     }
 
     private void updatePassword(){
-        AuthCredential authCredential = EmailAuthProvider.getCredential(firebaseUser.getEmail(),"oldPass");
-        firebaseUser.reauthenticate(authCredential).addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                firebaseUser.updatePassword("newPassword").addOnCompleteListener(task1->{
-                    if (task1.isSuccessful()){
-                        Toast.makeText(getContext(), "Change password success", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(getContext(), "Change password unsuccess", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }else{
-                Toast.makeText(getContext(), "Current password is uncorrect", Toast.LENGTH_SHORT).show();
-            }
-        });
-        firebaseUser.updatePassword("Hihi");
+        ChangePasswordDialog dialog = new ChangePasswordDialog(getContext());
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
 
